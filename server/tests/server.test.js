@@ -15,15 +15,33 @@ beforeEach((done) => {
   //console.log(user);
 
   console.log('user object:', JSON.stringify(userModel, undefined, 2));
-//   userModel.deleteMany({email: 'Supertest@gmail.com'})
-//     .then((res) => {
-// //      console.log('Number of records deleted in userModel():', res.result.n);
-//       return done('Number of records deleted in userModel():', res.result.n);
-//
-//     }, (err) => {
-//       done(err);
-//     })
-done();
+  userModel.deleteMany({email: 'Supertest@gmail.com'})
+    .then((res) => {
+     console.log('Number of records deleted in userModel():', res.result.n);
+      // return done('Number of records deleted in userModel():', res.result.n);
+
+
+      var userExample1_for_read_test = ({
+          name: 'Arnold Schwarzenegger - userExample1_for_read_test A1',
+          signature: Date.now(),
+          email: 'test_to_read@gmail.com',
+          active: false
+      });
+      var userExample2_for_read_test = ({
+          name: 'Arnold Schwarzenegger - userExample2_for_read_test A2',
+          signature: Date.now(),
+          email: 'test_to_read@gmail.com',
+          active: false
+      });
+      var user_for_read_test = [userExample1_for_read_test, userExample2_for_read_test];
+      userModel.insertMany(user_for_read_test)
+        .then(() => done());
+
+//      done();
+    }, (err) => {
+      done(err);
+    })
+//done();
 });
 
 //////////////////////////////////////////////////////////////
@@ -137,8 +155,8 @@ describe('POST /user', () => {
     //  .status(200)
       .expect((response) => {
         expect(response.length).toNotBe(0);
-        console.log('Number of documents selected from User:', response);
-        console.log('documents:', response.body);
+      //  console.log('Number of documents selected from User:', response);
+        //console.log('documents:', response.body);
 
       }, (err) => {
 
