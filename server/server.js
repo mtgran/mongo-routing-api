@@ -2,6 +2,8 @@
 ///////////////////////////////////////////////////////////////////////
 // Express Server
 ///////////////////////////////////////////////////////////////////////
+
+const _ = require('lodash');
 var express = require('express');
 var bodyParser = require('body-parser');
 var outmsg = require('./messages/server-msg.js');
@@ -103,6 +105,41 @@ userModel.find()
 
 });
 
+////////////////////////////////////////////////
+// UPDATE
+////////////////////////////////////////////////
+app.patch('/user/:id', (request, response) => {
+
+  var id = request.params.id;
+  var body = _.pick(request.body, ['name', 'email', 'signature']);
+
+  // Validate ID
+  if (!ObjectID.isValid(request.params.id)) {
+    console.log('The objectID is not valid:', request.params.id);
+    return response.status(404).send();
+  }
+
+  body.email = '1234@hotmail.com';
+  body.timeStamp = '_xxxx_';
+
+  userModel.findByIdAndUpdate(id, {$set: body}, {new: true})
+    .then((user) => {
+      if (!user) {
+        return response.status(404).send();
+      }
+//    I6 Sintax
+      response.status(200).send({user});
+    }, (err) => {
+
+    }).catch((err) => {
+        response
+          .status(400)
+          .send();
+    })
+
+});
+
+
 
 ///////////////////////////////////////////////////////////////////////
 // 'POST /user' -> Create an User
@@ -139,6 +176,33 @@ userModel.findById(request.params.id)
 
 
 });
+
+
+
+app.delete('/user/:id', (request, response) => {
+
+  // Validate ID
+  if (!ObjectID.isValid(request.params.id)) {
+    console.log('The objectID is not valid:', request.params.id);
+    return response.status(404).send();
+  }
+
+  userModel.findByIdAndRemove(request.params.id)
+    .then((user) => {
+      console.log('\nUser removed', user);
+      response
+        .status(200)
+        .send({user});
+
+    }, (err) => {
+      response
+        .status(404)
+        .send({});
+
+    });
+
+});
+
 
 
 ///////////////////////////////////////////////////////////////////////
