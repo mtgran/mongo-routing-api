@@ -9,7 +9,8 @@ var outmsg = require('./messages/server-msg.js');
 ///////////////////////////////////////////////////////////////////////
 var {mongoose} = require('./db/mongoose-ic').mongoose;
 var {routingModel} = require('./models/rout-model-ic').routingModel;
-var {userModel} = require('./models/user-model-ic').userModel;
+//var {userModel} = require('./models/user-model-ic').userModel;
+var {userModel} = require('./models/user-model-ic');
 
 ///////////////////////////////////////////////////////////////////////
 // Server
@@ -27,6 +28,8 @@ app.post('/user', (request, response) => {
 
 outmsg.msg('---body---\n');
   outmsg.msg(request.body);
+  // outmsg.msg('---request---\n');
+  // outmsg.msg(request);
 
   var user = new userModel({
     name: request.body.name,
@@ -45,12 +48,91 @@ outmsg.msg('---body---\n');
   });
 
 
+  ////////////////////////////////////////////////////////
+  // JSON Example
+  ////////////////////////////////////////////////////////
+  // {
+  //     "__v": 0,
+  //     "name": "Arnold Schwarzenegger Version 4",
+  //     "signature": "Signature 4",
+  //     "email": "4@gmail.com",
+  //     "_id": "59745822ba5c8c12b488df7c",
+  //     "timeStamp": null,
+  //     "active": false
+  // }
+
 });
 
 ///////////////////////////////////////////////////////////////////////
 // Create a routing
 ///////////////////////////////////////////////////////////////////////
 app.post('/routing', (request, response) => {
+
+  outmsg.msg('---body---\n');
+    outmsg.msg(request.body);
+
+  // var routingDocument = new routingModel({
+  //   extRef: 'request.body.extRef',
+  //   extRef2: 'request.body.extRef2',
+  //   contract: 'request.body.contract',
+  //   incomingBP: 'request.body.incomingBP',
+  //   outgoingBP: 'request.body.outgoingBP',
+  //   termsOfSale: 'request.body.termsOfSale',
+  //   Instruction: 'request.body.Instruction',
+  //   waers: 'request.body.waers',
+  //   agreement: 'request.body.agreement',
+  //   contactDetails:  'request.body.contactDetails',
+  //   signature: 'request.body.signature',
+  //   state: 'request.body.state',
+  //   timeStamp: 'request.body.timeStamp'
+  // });
+
+  var routingDocument = new routingModel({
+    extRef: request.body.extRef,
+    extRef2: request.body.extRef2,
+    contract: request.body.contract,
+    incomingBP: request.body.incomingBP,
+    outgoingBP: request.body.outgoingBP,
+    termsOfSale: request.body.termsOfSale,
+    Instruction: request.body.Instruction,
+    waers: request.body.waers,
+    agreement: request.body.agreement,
+    contactDetails:  request.body.contactDetails,
+    signature: request.body.signature,
+    state: request.body.state,
+    timeStamp: request.body.timeStamp
+  });
+
+  routingDocument.save().then((doc) => {
+    console.log('Saved:\n', JSON.stringify(doc, undefined, 2));
+    response.send(doc);
+
+  }, (e) => {
+    console.log('Unable to save the model routingModel', e);
+    response.status(400).send(e);
+  });
+
+  ////////////////////////////////////////////////////////
+  // JSON Example
+  ////////////////////////////////////////////////////////
+  // {
+  //     "__v": 0,
+  //     "extRef": "DE45000001",
+  //     "extRef2": "2017073000_001",
+  //     "contract": "0x4711",
+  //     "incomingBP": "30040",
+  //     "outgoingBP": "30041",
+  //     "termsOfSale": "smart ExW",
+  //     "Instruction": "Instruction 4711",
+  //     "waers": "BTC",
+  //     "agreement": "xy",
+  //     "contactDetails": "zz",
+  //     "signature": "xzqf34rfsdfggv4tz54",
+  //     "_id": "59745c9872822e1536e27372",
+  //     "timeStamp": "01.01.2017",
+  //     "state": true
+  // }
+
 
 
 });
@@ -64,8 +146,10 @@ app.listen(3000 ,() => {
 });
 
 ///////////////////////////////////////////////////////////////////////
+// Export the app for testing porpouses
 ///////////////////////////////////////////////////////////////////////
 
+module.exports = {app};
 
 ///////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
@@ -91,7 +175,7 @@ app.listen(3000 ,() => {
 // mongoose.Promise = global.Promise;
 // mongoose.connect('mongodb://localhost:27017/RoutinApp002');
 
-// dd
+// dd.stringify(us
 // create a model
 
 // var {mongoose} = require('./db/mongoose-ic').mongoose;

@@ -1,4 +1,5 @@
-var {mongoose} = require('./../db/mongoose-ic').mongoose;
+//var mongoose = require('./../db/mongoose-ic').mongoose;
+var {mongoose} = require('./../db/mongoose-ic');
 
 
 var routingModel = mongoose.model('routingModel', {
@@ -33,11 +34,12 @@ var routingModel = mongoose.model('routingModel', {
   contactDetails: { type: String }, //, required: true },
 
 
-  // signature: { type: String, required: true, minlength: 1, trim: true },
+  signature: { type: String }, //, required: true, minlength: 1, trim: true },
   state: { type: Boolean, default: false},
   timeStamp: { type: String, default: null }
   // email: { type: String, required: true, trim: true, minlength:3}
 });
 
 
-module.exports.routingModel = {routingModel};
+//module.exports.routingModel = {routingModel};
+module.exports = {routingModel};

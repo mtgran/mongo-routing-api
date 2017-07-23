@@ -1,4 +1,6 @@
-var {mongoose} = require('./../db/mongoose-ic').mongoose;
+//var {mongoose} = require('./../db/mongoose-ic').mongoose;
+//var mongoose = require('./../db/mongoose-ic').mongoose;
+var {mongoose} = require('./../db/mongoose-ic');
 
 var userModel = mongoose.model('userModel', {
 
@@ -10,4 +12,5 @@ var userModel = mongoose.model('userModel', {
 });
 
 
-module.exports.userModel = {userModel};
+//module.exports.userModel = {userModel};
+module.exports = {userModel};
