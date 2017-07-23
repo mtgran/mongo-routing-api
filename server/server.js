@@ -117,6 +117,14 @@ if (!ObjectID.isValid(request.params.id)) {
 //userModel.find({signature: userExample.signature})
 userModel.findById(request.params.id)
   .then((user) => {
+    if (!user) {
+    // return console.log('The objectID is not valid:', request.params.id);
+    response
+      .status(404)
+      .send();
+      // .send({user});
+
+    }
 
   response
     .status(200)

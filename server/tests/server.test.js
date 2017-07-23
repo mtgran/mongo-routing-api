@@ -4,11 +4,27 @@
 
 const expect = require('expect');
 const request = require('supertest');
+const {ObjectID} = require('mongodb');
 
 const {app} = require('./../server');
 //const user = require('./../models/rout-model-ic').userModel;
 const {routing} = require('./../models/rout-model-ic');
 const {userModel} = require('./../models/user-model-ic');
+
+const userExample3_for_read_test = ({
+    _id: new ObjectID(),
+    name: 'Arnold Schwarzenegger - userExample2_for_read_test A3',
+    signature: Date.now(),
+    email: 'test_to_read@gmail.com',
+    active: false
+  });
+  const userExample4_for_read_test = ({
+      _id: new ObjectID(),
+      name: 'Arnold Schwarzenegger - userExample2_for_read_test A4',
+      signature: Date.now(),
+      email: 'test_to_read@gmail.com',
+      active: false
+    });
 
 
 beforeEach((done) => {
@@ -173,6 +189,7 @@ describe('POST /user', () => {
   });
 
 
+
   // //***********************************************
   // //***********************************************
   // // It test the failure of creating a new user
@@ -220,6 +237,46 @@ describe('POST /user', () => {
 
 
 
+describe('GET /users/:id', () => {
+
+  it ('it should a user by ID', (done) => {
+
+
+
+    // if (!ObjectID.isValid(id)) {
+    //   console.log('The objectID is not valid:', id);
+    // }
+    console.log('ppppppppppppppp');
+console.log(userExample3_for_read_test._id);
+
+    request(app)
+      .get(`/user/${userExample3_for_read_test._id.toHexString()}`)
+    //  .status(200)
+      .expect(404)
+      .expect((response) => {
+// console.log(`response:/user/${userExample3_for_read_test._id.toHexString()}`);
+//
+// console.log(`response.body${JSON.stringify(response.body, undefined, 2)}`);
+//         expect(response.body.user._id).toEqual(userExample3_for_read_test._id);
+
+      //  console.log('Number of documents selected from User:', response);
+        //console.log('documents:', response.body);
+        // done();
+      }, (err) => {
+
+      }).end((err, response) => {
+        if (err) {
+          return done(err);
+        }
+        expect(response.length).toNotBe(0);
+        done();
+
+      });
+      //      .send({userExample})
+
+  });
+
+});
 
 //////////////////////////////////////////////////////////////
 // Test section for POST /routing
