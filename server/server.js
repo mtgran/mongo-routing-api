@@ -15,6 +15,8 @@ var {routingModel} = require('./models/rout-model-ic').routingModel;
 //var {userModel} = require('./models/user-model-ic').userModel;
 var {userModel} = require('./models/user-model-ic');
 
+const port = process.env.PORT || 3000;
+
 ///////////////////////////////////////////////////////////////////////
 // Server
 ///////////////////////////////////////////////////////////////////////
@@ -216,8 +218,8 @@ app.post('/routing', (request, response) => {
 ///////////////////////////////////////////////////////////////////////
 // Server listening on port 3000
 ///////////////////////////////////////////////////////////////////////
-app.listen(3000 ,() => {
-  outmsg.msg(outmsg.MSG_SERVER_STARTED_ON, 3000);
+app.listen(port ,() => {
+  outmsg.msg(outmsg.MSG_SERVER_STARTED_ON, port);
 
 });
 
