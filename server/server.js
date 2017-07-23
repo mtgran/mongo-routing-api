@@ -1,4 +1,5 @@
-const config = require('./config/config.js');
+const config = require('./../config/config.js');
+
 
 ///////////////////////////////////////////////////////////////////////
 // Express Server
