@@ -1,9 +1,12 @@
+
 ///////////////////////////////////////////////////////////////////////
 // Express Server
 ///////////////////////////////////////////////////////////////////////
 var express = require('express');
 var bodyParser = require('body-parser');
 var outmsg = require('./messages/server-msg.js');
+
+const {ObjectID} = require('mongodb');
 ///////////////////////////////////////////////////////////////////////
 // Collection and Documents needed
 ///////////////////////////////////////////////////////////////////////
@@ -93,6 +96,35 @@ userModel.find()
   }, (e) => {
     console.log('**Unable to select any document from userModel**\n', e);
     response.status(400).send(e);
+  });
+
+
+});
+
+
+///////////////////////////////////////////////////////////////////////
+// 'POST /user' -> Create an User
+///////////////////////////////////////////////////////////////////////
+app.get('/user/:id', (request, response) => {
+// We have to use bodyParser to get the JSON and convert it into an object
+
+// Validate ID
+if (!ObjectID.isValid(request.params.id)) {
+  console.log('The objectID is not valid:', request.params.id);
+  return response.status(404).send();
+}
+
+//userModel.find({signature: userExample.signature})
+userModel.findById(request.params.id)
+  .then((user) => {
+
+  response
+    .status(200)
+    .send({user});
+
+  }, (e) => {
+    console.log('**Unable to select any document from userModel**\n', e);
+    response.status(404).send(e);
   });
 
 
