@@ -21,7 +21,7 @@ var app = express();
 app.use(bodyParser.json());
 
 ///////////////////////////////////////////////////////////////////////
-// Create an User
+// 'POST /user' -> Create an User
 ///////////////////////////////////////////////////////////////////////
 app.post('/user', (request, response) => {
 // We have to use bodyParser to get the JSON and convert it into an object
@@ -35,6 +35,7 @@ app.post('/user', (request, response) => {
     name: request.body.name,
     signature: request.body.signature,
     email: request.body.email,
+    timeStamp: Date.now(),
     active: false
   });
 
@@ -63,8 +64,43 @@ app.post('/user', (request, response) => {
 
 });
 
+
 ///////////////////////////////////////////////////////////////////////
-// Create a routing
+// 'POST /user' -> Create an User
+///////////////////////////////////////////////////////////////////////
+app.get('/user', (request, response) => {
+// We have to use bodyParser to get the JSON and convert it into an object
+
+//userModel.find({signature: userExample.signature})
+userModel.find()
+  .then((users) => {
+
+  // var user = new userModel({
+  //   name: request.body.name,
+  //   signature: request.body.signature,
+  //   email: request.body.email,
+  //   active: false
+  // });
+
+  // user.get()().then( (doc) => {
+  //   console.log('**Saved the userModel**:\n', JSON.stringify(doc, undefined, 2));
+  //   response.status(200).send(doc);
+
+  response
+    .status(200)
+    .send({users});
+
+  }, (e) => {
+    console.log('**Unable to select any document from userModel**\n', e);
+    response.status(400).send(e);
+  });
+
+
+});
+
+
+///////////////////////////////////////////////////////////////////////
+// 'POST /routing' -> Create a routing
 ///////////////////////////////////////////////////////////////////////
 app.post('/routing', (request, response) => {
 
@@ -87,7 +123,7 @@ app.post('/routing', (request, response) => {
   //   timeStamp: 'request.body.timeStamp'
   // });
 
-  var routingDocument = new routingModel({
+  var routingDocument = {
     extRef: request.body.extRef,
     extRef2: request.body.extRef2,
     contract: request.body.contract,
@@ -101,7 +137,7 @@ app.post('/routing', (request, response) => {
     signature: request.body.signature,
     state: request.body.state,
     timeStamp: request.body.timeStamp
-  });
+  };
 
   routingDocument.save().then((doc) => {
     console.log('Saved:\n', JSON.stringify(doc, undefined, 2));
