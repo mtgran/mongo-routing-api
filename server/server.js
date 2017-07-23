@@ -26,8 +26,8 @@ app.use(bodyParser.json());
 app.post('/user', (request, response) => {
 // We have to use bodyParser to get the JSON and convert it into an object
 
-outmsg.msg('---body---\n');
-  outmsg.msg(request.body);
+// outmsg.msg('---body---\n');
+//   outmsg.msg(request.body);
   // outmsg.msg('---request---\n');
   // outmsg.msg(request);
 
@@ -39,11 +39,11 @@ outmsg.msg('---body---\n');
   });
 
   user.save().then( (doc) => {
-    console.log('Saved:\n', JSON.stringify(doc, undefined, 2));
-    response.send(doc);
+    console.log('**Saved the userModel**:\n', JSON.stringify(doc, undefined, 2));
+    response.status(200).send(doc);
 
   }, (e) => {
-    console.log('Unable to save the model userModel', e);
+    console.log('**Unable to save the model userModel**\n', e);
     response.status(400).send(e);
   });
 

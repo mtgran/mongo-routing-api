@@ -7,8 +7,8 @@ const request = require('supertest');
 
 const {app} = require('./../server');
 //const user = require('./../models/rout-model-ic').userModel;
-const {userModel} = require('./../models/rout-model-ic');
-const {routing} = require('./../models/user-model-ic');
+const {routing} = require('./../models/rout-model-ic');
+const {userModel} = require('./../models/user-model-ic');
 
 
 beforeEach((done) => {
@@ -54,45 +54,77 @@ describe('POST /user', () => {
         active: false
     });
 
-    console.log(' json start:');
-    console.log(JSON.stringify(userExample, undefined, 2));
-    console.log(' json end:');
+    // console.log(' json start:');
+    // console.log(JSON.stringify(userExample, undefined, 2));
+    // console.log(' json end:');
 
     // make a request with Supertest
     request(app)
       .post('/user')
-//      .send({userExample})
- .send(JSON.stringify(userExample, undefined, 2))
-//.send({'param1': 'uno', 'param2': 'dos'})
+      //      .send({userExample})
+      .send(JSON.stringify(userExample, undefined, 2))
       //.set('Accept', 'application/json')
       .type('json')
-      .expect(200)
+      //.expect(200)
       .expect( (response) => {
+        //assert(response.body.name === 'xdx').toBe(true);
+console.log('aaaaaaaaaaaaaaaaaaaaaaa:'); ///, response);
         // Custom assertion
-        expect(response.body.name).toBe(userExample.name); })
+        // expect("456" === 'xdx').toBe(true);
+        // expect(response.body.name).to.have.string('1d3');
+        expect(response.body.name).toBe(userExample.name);
+    //    console.log('\n//////***///////////////:', JSON.stringify(response, undefined, 2));
+        console.log('\n//////----///////////////:', response.body.name);
+        // expect(response.body.name).to.have.string('1d3');
+        //expect("456" === 'xdx').toBe(true);
+      //  done();
+      })
       .end( (err, res) => { // end to rap the things done
         // now we want to check what is stored in the mondodb user collection
 
-        if (err) { 
+console.log('bbbbbbbbbbbbbb:'); //, JSON.stringify(res, undefined, 2));
+
+        if (err) {
+          console.log('cccccccc:'); //, JSON.stringify(res, undefined, 2));
           return done(err);
         }
+        console.log('dddddddddddd:', userExample.email); //, JSON.stringify(res, undefined, 2));
+        console.log('dddddd----ddd:', userModel); //, JSON.stringify(res, undefined, 2));
         userModel.find({signature: userExample.signature})
           .then((user) => {
-            expect(userModel.signature).toBe(userExample.signature);
-            expect(userModel.name).toBe(userExample.name);
-            expect(user).toBe(userExample);
+            console.log('findfindfindfindfind:', user); //, JSON.stringify(res, undefined, 2));
+
+            console.log('user.signature:', user[0].signature); //, JSON.stringify(res, undefined, 2));
+            console.log('user.signature typeof:', typeof(user)); //, JSON.stringify(res, undefined, 2));
+            console.log('user.signature typeof [0]:', typeof(user[0])); //, JSON.stringify(res, undefined, 2));
+            console.log('userExample.signature:', userExample.signature); //, JSON.stringify(res, undefined, 2));
+            console.log('user[0].name:', user[0].name); //, JSON.stringify(res, undefined, 2));
+            console.log('userExample[0].name:', userExample.name); //, JSON.stringify(res, undefined, 2));
+
+            expect(user[0].signature).toEqual(userExample.signature, '--To equal real.- user[0].signature is not equal to userExample.signature');
+            // expect(user[0].signature).toEqual('2', '--To equal.- user[0].signature is not equal to userExample.signature');
+            // expect(user[0].signature).toMatch('2', '--To match.- user[0].signature is not equal to userExample.signature');
+            // expect(0).toBe(1, '0.- user[0].signature is not equal to userExample.signature');
+            // expect(user[0].signature).toBe(userExample.signature, '1.- user[0].signature is not equal to userExample.signature');
+            // expect(user[0].signature === userExample.signature).toBe(true);
+            // expect(user[0].name === userExample.name).toBe(true);
+            //expect(user).toBe(userExample);
+            //expect('123').toBe('4567');
+            console.log('eeeeee:'); //, JSON.stringify(res, undefined, 2));
             done();
           }, (err) => {
+            console.log('fffffffffff:'); //, JSON.stringify(res, undefined, 2));
             return done(err);
           }). catch((e) => {
+            console.log('ggggggggggg:'); //, JSON.stringify(res, undefined, 2));
             return done(e);
           })
 
 
       });
 
-
-    done();
+    //     console.log('\n//////finishing///////////////:');
+    // return done();
   });
 
 
