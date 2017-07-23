@@ -17,8 +17,27 @@ var routingModel = mongoose.model('routingModel', {
   // Incoming BP
   outgoingBP: { type: String }, //, required: true },
 
+  // Terms of Sale
+  termsOfSale: { type: String }, //, required: true },
+
+  // Instruction
+  Instruction: { type: String }, //, required: true },
+
+  // Currency ISO
+  waers: { type: String }, //, required: true },
+
+  // Agreement
+  agreement: { type: String }, //, required: true },
+
+  // Contact details
+  contactDetails: { type: String }, //, required: true },
+
+
   // signature: { type: String, required: true, minlength: 1, trim: true },
   state: { type: Boolean, default: false},
   timeStamp: { type: String, default: null }
   // email: { type: String, required: true, trim: true, minlength:3}
 });
+
+
+module.exports.routingModel = {routingModel};
